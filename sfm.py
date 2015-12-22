@@ -82,7 +82,7 @@ if __name__ == "__main__":
     if fmask is None:
         mask = None
     else:
-        mask = nib.load(fmask).get_data().astype(bool)
+        mask = nib.load(op.join('/input', fmask)).get_data().astype(bool)
 
     # Fit the model:
     sfmodel = sfm.SparseFascicleModel(gtab)
