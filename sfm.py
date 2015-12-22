@@ -19,11 +19,11 @@ def dpsave(img, filename):
     img.set_qform(affine, 1)
     nib.save(img, filename)
 
-def calc_fa(beta, iso, gtab):
+def calc_fa(beta, iso):
     """
     Calculate the Fiber Anistropy in each voxel sum(beta_i)/w_0
     """
-    return np.sum(beta, -1) / iso.predict(gtab)
+    return np.sum(beta, -1) / iso.predict()[:, 0].reshape(beta.shape[:-1])
 
 def calc_di(beta, sphere, mask=None):
     """
@@ -36,14 +36,14 @@ def calc_di(beta, sphere, mask=None):
     where $\beta_i$ is the weight in each direction, denoted by $alpha_i$,
     relative to the direction of the maximal weight.
     """
-    di = np.zeros(beta.shape)
+    di = np.zeros(beta.shape[:-1])
     if mask is None:
-        mask = np.ones(beta.shape, bool)
+        mask = np.ones(beta.shape[:-1], bool)
 
     di_flat = np.zeros(np.sum(mask))
     mask_beta = beta[mask]
 
-    for vox in xrange(di_fla.shape[0]):
+    for vox in xrange(di_flat.shape[0]):
         inds = np.argsort(mask_beta[vox])[::-1]  # From largest to smallest
         nonzero_idx = np.where(mask_beta[vox][inds] > 0)
         if len(nonzero_idx[0]) > 0:
@@ -60,7 +60,7 @@ def calc_di(beta, sphere, mask=None):
                                   np.sin(angles))
 
     di[mask] = di_flat
-    return out
+    return di
 
 
 if __name__ == "__main__":
