@@ -64,20 +64,20 @@ def calc_di(beta, sphere, mask=None):
 
 
 if __name__ == "__main__":
-    fmetadata = '/Users/arokem/tmp/input/metadata.json' #"/input/metadata.json"
+    fmetadata = '/input/metadata.json'
     # Fetch metadata:
     with open(fmetadata, 'rt') as fobj:
         metadata = json.load(fobj)
     fdata, fbval, fbvec = [metadata[k] for k in ["fdata", "fbval", "fbvec"]]
 
     # Load the data:
-    img = nib.load(op.join('/Users/arokem/tmp/input', str(fdata)))
-    gtab = grad.gradient_table(op.join('/Users/arokem/tmp/input', str(fbval)),
-                               op.join('/Users/arokem/tmp/input', str(fbvec)))
+    img = nib.load(op.join('/input', str(fdata)))
+    gtab = grad.gradient_table(op.join('/input', str(fbval)),
+                               op.join('/input', str(fbvec)))
     data = img.get_data()
     affine = img.get_affine()
 
-    # Get the optional params:
+    # Get the optional mask param:
     fmask = metadata.get('fmask', None)
     if fmask is None:
         mask = None
@@ -89,7 +89,7 @@ if __name__ == "__main__":
     sffit = sfmodel.fit(data, mask=mask)
 
     # The output will all have the same basic name as the data file-name:
-    root = op.join("/Users/arokem/tmp/output",
+    root = op.join("/output",
                    op.splitext(op.splitext(op.split(fdata)[-1])[0])[0])
 
     # Save to files:
