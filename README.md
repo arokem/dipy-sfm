@@ -38,7 +38,7 @@ format:
     "fdata":"HARDI150.nii.gz",
     "fbval":"HARDI150.bval",
     "fbvec":"HARDI150.bvec",
-    "fmask":"mask.nii.gz",
+    "fmask":"mask.nii.gz"
     }
 
 Where `fmask` parameter is optional.
