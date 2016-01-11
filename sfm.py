@@ -23,7 +23,7 @@ def calc_fa(beta, iso):
     """
     Calculate the Fiber Anistropy in each voxel sum(beta_i)/w_0
     """
-    return np.sum(beta, -1) / iso.predict()[:, 0].reshape(beta.shape[:-1])
+    return (np.sum(beta, -1) / iso.predict()[:, 0]).reshape(beta.shape[:-1])
 
 def calc_di(beta, sphere, mask=None):
     """
