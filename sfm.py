@@ -19,11 +19,18 @@ def dpsave(img, filename):
     img.set_qform(affine, 1)
     nib.save(img, filename)
 
-def calc_fa(beta, iso):
+def calc_fa(beta, iso, mask=None):
     """
     Calculate the Fiber Anistropy in each voxel sum(beta_i)/w_0
     """
-    return (np.sum(beta, -1) / iso.predict()[:, 0]).reshape(beta.shape[:-1])
+    if mask is None:
+        mask = np.ones(beta.shape[:-1], bool)
+
+    fa_flat = np.sum(beta, -1)[mask] / iso.predict()[:, 0]
+
+    fa = np.zeros(beta.shape[:-1])
+    fa[mask] = fa_flat
+    return fa
 
 def calc_di(beta, sphere, mask=None):
     """
@@ -61,7 +68,7 @@ def calc_di(beta, sphere, mask=None):
 
     di[mask] = di_flat
     return di
-
+    
 
 if __name__ == "__main__":
     fmetadata = '/input/metadata.json'
