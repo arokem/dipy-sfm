@@ -68,7 +68,7 @@ def calc_di(beta, sphere, mask=None):
 
     di[mask] = di_flat
     return di
-    
+
 
 if __name__ == "__main__":
     fmetadata = '/input/metadata.json'
@@ -101,7 +101,7 @@ if __name__ == "__main__":
 
     # Save to files:
     dpsave(nib.Nifti1Image(sffit.beta, affine), root + '_SFM_params.nii.gz')
-    sf_fa = calc_fa(sffit.beta, sffit.iso)
+    sf_fa = calc_fa(sffit.beta, sffit.iso, mask=mask)
     dpsave(nib.Nifti1Image(sf_fa, affine), root + '_SFM_FA.nii.gz')
     sphere = dpd.get_sphere()
     sf_di = calc_di(sffit.beta, sphere, mask=mask)
